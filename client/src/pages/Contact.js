@@ -28,7 +28,7 @@ function Contact() {
   }, [searchQueryText]);
   const getcontacts = async () => {
     try {
-      let url = `http://localhost:8800/contacts`;
+      let url = `/contacts`;
       console.log(searchQueryText);
       if (searchQueryText) {
         url = url + `?searchQuery=${searchQueryText}`;
@@ -81,10 +81,7 @@ function Contact() {
     // console.log("values => ", values);
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:8800/contact",
-        values
-      );
+      const { data } = await axios.post("/contact", values);
       console.log(data);
       setContacts([data.contact, ...contacts]);
       toast.success("Contact created successfully");
@@ -100,9 +97,7 @@ function Contact() {
 
   const handleDelete = async (item) => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:8800/contact/${item._id}`
-      );
+      const { data } = await axios.delete(`/contact/${item._id}`);
       setContacts(contacts.filter((contact) => contact._id !== data._id));
       toast.success("contact deleted successfully");
     } catch (err) {
