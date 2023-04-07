@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const contactSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    mobile_number: { type: String, required: true, unique: true },
+    mobile_number: { type: Number, required: true, unique: true },
   },
   { timestamps: true }
 );
