@@ -15,14 +15,26 @@ function Contact() {
   //hooks
 
   const [form] = Form.useForm();
+  //search state
+
+  const [searchQueryText, setSearchQuery] = useState("");
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   useEffect(() => {
     getcontacts();
-  }, []);
+  }, [searchQueryText]);
   const getcontacts = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8800/contacts");
-      console.log(data);
+      let url = `http://localhost:8800/contacts`;
+      console.log(searchQueryText);
+      if (searchQueryText) {
+        url = url + `?searchQuery=${searchQueryText}`;
+        console.log(url);
+      }
+      const { data } = await axios.get(url);
       setContacts(data);
     } catch (err) {
       console.log(err);
@@ -107,7 +119,7 @@ function Contact() {
   const handleUpdate = async (values) => {
     try {
       const { data } = await axios.put(
-        `/contact/${updatingContact._id}`,
+        `http://localhost:8800/contact/${updatingContact._id}`,
         values
       );
       console.log(data);
@@ -126,6 +138,7 @@ function Contact() {
       toast.error("Contact update fail");
     }
   };
+
   return (
     <Row>
       {/* first column */}
@@ -153,6 +166,16 @@ function Contact() {
       </Col>
       {/* second column */}
       <Col xs={22} sm={22} lg={14} offset={1}>
+        <Input
+          style={{
+            marginTop: "10px",
+            marginBottom: "10px",
+            width: "350px",
+          }}
+          onChange={handleInputChange}
+          placeholder="Give it search by a name"
+        />
+
         <Table
           columns={columns}
           dataSource={contacts}
