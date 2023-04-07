@@ -21,20 +21,20 @@ const createContact = async (req, res) => {
 const readContacts = async (req, res) => {
   try {
     const { searchQuery } = req.query;
-    console.log(typeof searchQuery);
     let queryObject = {};
     // add stuff based on condition
 
     if (searchQuery) {
+      let mobileQuery = isNaN(searchQuery) ? null : Number(searchQuery);
+
       queryObject = {
         $or: [
           { name: { $regex: searchQuery, $options: "i" } }, // Case-insensitive search for name
-          // { mobile_number: { $regex: searchQuery } }, // Case-insensitive search for mobile number
+          { mobile_number: { $eq: mobileQuery } }, // Case-insensitive search for mobile number
         ],
       };
     }
     const contacts = await Contact.find(queryObject).sort({ createdAt: -1 });
-    //console.log(contacts);
     res.json(contacts);
   } catch (error) {
     console.log(error);

@@ -173,7 +173,7 @@ function Contact() {
             width: "350px",
           }}
           onChange={handleInputChange}
-          placeholder="Give it search by a name"
+          placeholder="Give it search by a name or mobile number"
         />
 
         <Table
